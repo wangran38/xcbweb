@@ -10,19 +10,16 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
-router.beforeEach(async(to, from, next) => {
-  // start progress bar
-  NProgress.start()
 
-  // set page title
+// 路由拦截器
+router.beforeEach(async(to, from, next) => {
+  NProgress.start()
   document.title = getPageTitle(to.meta.title)
 
-  // determine whether the user has logged in
   const hasToken = getToken()
 
   if (hasToken) {
     if (to.path === '/login') {
-      // if is logged in, redirect to the home page
       next({ path: '/' })
       NProgress.done()
     } else {
