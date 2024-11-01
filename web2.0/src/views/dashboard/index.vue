@@ -17,11 +17,11 @@
           <el-card shadow="always">固定摊位摊主：{{ dataInfo.shopuser_num }}个</el-card>
         </div>
       </el-col>
-      <!-- <el-col :span="6">
+      <el-col :span="6">
         <div>
           <el-card shadow="always">浮动摊位摊主：{{ dataInfo.value2 }}个</el-card>
         </div>
-      </el-col> -->
+      </el-col>
     </el-row>
 
     <el-row :gutter="20" style="margin-top:40px;">
@@ -35,41 +35,69 @@
           <el-card shadow="always">积分订单：{{ dataInfo.sorce_num }}笔</el-card>
         </div>
       </el-col>
-      <!-- <el-col :span="6">
+      <el-col :span="6">
         <div>
           <el-card shadow="always">现金订单{{ dataInfo.value2 }}笔</el-card>
         </div>
+      </el-col>
+      <!-- <el-col :span="6">
+        <div>
+          <el-card shadow="always">商家结算积分{{ value2 }}</el-card>
+        </div>
       </el-col> -->
-      <!--<el-col :span="6">
-        <div>
-          <el-card 
-          shadow="always">商家结算积分{{value2}}</el-card>
-        </div>
-      </el-col>-->
     </el-row>
-    <!-- <el-row :gutter="20" style="margin-top:40px;">
+    <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <div>
-          <el-card shadow="always">开奖总积分{{ dataInfo.value2 }}</el-card>
+          <el-card shadow="always">开奖总积分: 15000分 {{ 15000 / 10 }}元</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">商家结算积分{{ dataInfo.value2 }}</el-card>
+          <el-card shadow="always">已消费积分: {{ dataInfo.value2 }}分</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">未结算积分{{ dataInfo.value2 }}</el-card>
+          <el-card shadow="always">未消费积分:{{ dataInfo.value2 }}分</el-card>
+        </div>
+      </el-col>
+
+    </el-row>
+    <el-row :gutter="20" style="margin-top:40px;">
+      <el-col :span="6">
+        <div>
+          <el-card shadow="always">商家合计积分:{{ dataInfo.value2 }}分</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card 
-          shadow="always">商家结算积分{{value2}}</el-card>
+          <el-card shadow="always">商家结算积分:{{ dataInfo.value2 }}分</el-card>
         </div>
       </el-col>
-    </el-row> -->
+      <el-col :span="6">
+        <div>
+          <el-card shadow="always">商家未结算积分:{{ dataInfo.value2 }}分</el-card>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20" style="margin-top:40px;">
+      <el-col :span="6">
+        <div>
+          <el-card shadow="always">今日打卡人数:{{ dataInfo.value2 }}分</el-card>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div>
+          <el-card shadow="always">本周打卡人数:{{ dataInfo.value2 }}分</el-card>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div>
+          <el-card shadow="always">本月打卡人数:{{ dataInfo.value2 }}分</el-card>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -98,6 +126,7 @@ export default {
       this.listLoading = true
       let { data } = await getcount(this.listQuery)
       this.dataInfo = data
+      this.dataInfo.value2 = 0
       setTimeout(() => {
         this.listLoading = false
       }, 800)
