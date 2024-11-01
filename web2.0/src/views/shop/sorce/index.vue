@@ -96,9 +96,19 @@
             <span>{{ row.phone }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="商户总积分" width="60" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.before }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="申请积分" width="60" align="center">
           <template slot-scope="{row}">
             <span>{{ row.shopscore }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="结算之后" width="60" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.after }}</span>
           </template>
         </el-table-column>
         <el-table-column label="申请备注" width="" align="center">

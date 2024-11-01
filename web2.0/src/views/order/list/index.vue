@@ -29,13 +29,20 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <!--<el-input
+      <el-input
         v-model="listQuery.phone"
-        placeholder="订单号"
+        placeholder="输入市场名称"
         style="width: 200px"
         class="filter-item"
         @keyup.enter.native="handleFilter"
-      />-->
+      />
+      <el-input
+        v-model="listQuery.phone"
+        placeholder="输入摊位名称"
+        style="width: 200px"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
       <!--<el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
           <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
         </el-select>-->
@@ -333,7 +340,8 @@
           page: 1,
           importance: undefined,
           out_trade_no: undefined,
-          categroy_id: undefined,
+          market_id: undefined,
+          shop_id: undefined,
           sort: '+id'
         },
         importanceOptions: [1, 2, 3],
