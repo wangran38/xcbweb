@@ -136,6 +136,11 @@
             <span>{{ getTagLable(row.status) }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="打卡记录" width="200px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.createtime | parseTime(row.createtime,'{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
           <template slot-scope="{row,$index}">
             <!--<el-button type="primary" size="mini" @click="handleUpdate(row)">

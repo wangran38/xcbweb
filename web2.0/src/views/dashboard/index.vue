@@ -32,12 +32,12 @@
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">积分订单：{{ dataInfo.sorce_num }}笔</el-card>
+          <el-card shadow="always">积分订单：{{ dataInfo.order_paywaynum }}笔</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">现金订单{{ dataInfo.value2 }}笔</el-card>
+          <el-card shadow="always">现金订单{{ dataInfo.order_paywaynum }}笔</el-card>
         </div>
       </el-col>
       <!-- <el-col :span="6">
@@ -49,17 +49,17 @@
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <div>
-          <el-card shadow="always">开奖总积分: 15000分 {{ 15000 / 10 }}元</el-card>
+          <el-card shadow="always">开奖总积分: {{ dataInfo.lottery_sum }}元</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">已消费积分: {{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">消费积分: {{ dataInfo.lottery_sellsum }}分</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">未消费积分:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">未消费积分:{{ dataInfo.lottery_sum-dataInfo.lottery_sellsum }}分</el-card>
         </div>
       </el-col>
 
@@ -67,34 +67,34 @@
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <div>
-          <el-card shadow="always">商家合计积分:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">商家合计积分:{{ dataInfo.lottery_sum }}分</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">商家结算积分:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">商家结算积分:{{ dataInfo.lottery_sellsum }}分</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">商家未结算积分:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">商家未结算积分:{{ dataInfo.lottery_sellsum }}分</el-card>
         </div>
       </el-col>
     </el-row>
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <div>
-          <el-card shadow="always">今日打卡人数:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">今日打卡人数:{{ dataInfo.sign_num }}人次</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">本周打卡人数:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">本周打卡人数:{{ dataInfo.sign_week_num }}人次</el-card>
         </div>
       </el-col>
       <el-col :span="6">
         <div>
-          <el-card shadow="always">本月打卡人数:{{ dataInfo.value2 }}分</el-card>
+          <el-card shadow="always">本月打卡人数:{{ dataInfo.sign_month_num }}人次</el-card>
         </div>
       </el-col>
     </el-row>
