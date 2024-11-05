@@ -3,42 +3,44 @@
     element-loading-spinner="el-icon-loading">
     <el-row :gutter="20">
       <el-col :span="6">
-        <div>
-          <el-card shadow="always">菜市场数量：{{ dataInfo.market_num }}家</el-card>
-        </div>
+        <router-link to="/market">
+          <el-card shadow="always">
+            菜市场数量：{{ dataInfo.market_num }}家
+          </el-card>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/user/list">
           <el-card shadow="always">会员人数：{{ dataInfo.user_num }}人</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/shop">
           <el-card shadow="always">固定摊位摊主：{{ dataInfo.shopuser_num }}个</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/shop">
           <el-card shadow="always">浮动摊位摊主：{{ dataInfo.value2 }}个</el-card>
-        </div>
+        </router-link>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
-        <div>
+        <router-link to="/order/list">
           <el-card shadow="always">订单总数：{{ dataInfo.order_num }}笔</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/order/list">
           <el-card shadow="always">积分订单：{{ dataInfo.order_paywaynum }}笔</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/order/list">
           <el-card shadow="always">现金订单{{ dataInfo.order_paywaynum }}笔</el-card>
-        </div>
+        </router-link>
       </el-col>
       <!-- <el-col :span="6">
         <div>
@@ -48,54 +50,54 @@
     </el-row>
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
-        <div>
+        <router-link to="/lottery/lottery1">
           <el-card shadow="always">开奖总积分: {{ dataInfo.lottery_sum }}元</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/lottery/lottery1">
           <el-card shadow="always">消费积分: {{ dataInfo.lottery_sellsum }}分</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
-          <el-card shadow="always">未消费积分:{{ dataInfo.lottery_sum-dataInfo.lottery_sellsum }}分</el-card>
-        </div>
+        <router-link to="/lottery/lottery1">
+          <el-card shadow="always">未消费积分:{{ dataInfo.lottery_sum - dataInfo.lottery_sellsum }}分</el-card>
+        </router-link>
       </el-col>
 
     </el-row>
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
-        <div>
+        <router-link to="/shop/sorce">
           <el-card shadow="always">商家合计积分:{{ dataInfo.lottery_sum }}分</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/shop/sorce">
           <el-card shadow="always">商家结算积分:{{ dataInfo.lottery_sellsum }}分</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/shop/sorce">
           <el-card shadow="always">商家未结算积分:{{ dataInfo.lottery_sellsum }}分</el-card>
-        </div>
+        </router-link>
       </el-col>
     </el-row>
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
-        <div>
+        <router-link to="/user/usersign">
           <el-card shadow="always">今日打卡人数:{{ dataInfo.sign_num }}人次</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/user/usersign">
           <el-card shadow="always">本周打卡人数:{{ dataInfo.sign_week_num }}人次</el-card>
-        </div>
+        </router-link>
       </el-col>
       <el-col :span="6">
-        <div>
+        <router-link to="/user/usersign">
           <el-card shadow="always">本月打卡人数:{{ dataInfo.sign_month_num }}人次</el-card>
-        </div>
+        </router-link>
       </el-col>
     </el-row>
   </div>

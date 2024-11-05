@@ -7,3 +7,12 @@ export function getorderlist(params) {
     data: params
   })
 }
+
+export function orderSum(params) {
+  return request({
+    url: '/admin/order/sum',
+    method: 'post',
+    data: params
+  })
+}
+
