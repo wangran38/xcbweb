@@ -35,7 +35,7 @@
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
       @sort-change="sortChange">
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80"
+      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="60"
         :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.Id }}</span>
@@ -46,7 +46,7 @@
          <el-avatar :src="row.user"></el-avatar>
         </template>
       </el-table-column>-->
-      <el-table-column label="申请人" min-width="100px" align="center">
+      <el-table-column label="申请人" align="center">
         <template slot-scope="{row}">
           <span>{{ row.username }}</span>
         </template>
@@ -56,7 +56,7 @@
           <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="商户总积分" width="60" align="center">
+      <el-table-column label="商户总积分" width="100" align="center">
         <template slot-scope="{row}">
           <span>{{ row.before }}</span>
         </template>
@@ -66,7 +66,7 @@
           <span>{{ row.shopscore }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="结算之后" width="60" align="center">
+      <el-table-column label="余额" width="60" align="center">
         <template slot-scope="{row}">
           <span>{{ row.after }}</span>
         </template>

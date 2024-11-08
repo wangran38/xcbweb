@@ -12,29 +12,9 @@
     <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
       <el-input v-model="listQuery.out_trade_no" placeholder="订单号" style="width: 200px" class="filter-item"
         @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.phone" placeholder="输入市场名称" style="width: 200px" class="filter-item"
-        @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.phone" placeholder="输入摊位名称" style="width: 200px" class="filter-item"
-        @keyup.enter.native="handleFilter" />
-      <!--<el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-          <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-        </el-select>-->
-      <!--<el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
-          <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-        </el-select>-->
-      <!--<el-select
-        v-model="listQuery.sort"
-        style="width: 140px"
-        class="filter-item"
-        @change="handleFilter"
-      >
-        <el-option
-          v-for="item in sortOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.key"
-        />
-      </el-select>-->
+      <el-date-picker v-model="listQuery.dateTime" type="datetimerange" :picker-options="pickerOptions"
+        range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" value-format="timestamp">
+      </el-date-picker>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         提交
@@ -153,9 +133,6 @@
           <el-input v-model="temp.keywords" />
         </el-form-item>
 
-
-        <!--<el-form-item label="详细说明" prop="content">-->
-        <!--<el-input type="textarea" :rows="2" v-model="temp.content" />-->
         <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" v-model="temp.content" :height="500" />
         </el-form-item>
@@ -290,6 +267,34 @@ export default {
   },
   data() {
     return {
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
+
       searchSeen: false,
       tableKey: 0,
       list: null,
@@ -300,11 +305,12 @@ export default {
       listQuery: {
         limit: 10,
         page: 1,
-        importance: undefined,
+        // importance: undefined,
         out_trade_no: undefined,
-        market_id: undefined,
-        shop_id: undefined,
-        sort: '+id'
+        // market_id: undefined,
+        // shop_id: undefined,
+        sort: '+id',
+        dateTime: [],
       },
       importanceOptions: [1, 2, 3],
       sortOptions: [{ label: 'ID 升序', key: '+id' }, { label: 'ID 倒序', key: '-id' }],
@@ -385,6 +391,8 @@ export default {
           this.listQuery.uid = item.uid
           break
       }
+      this.listQuery.page = 1
+
       this.getlist()
     },
     clearQuery() {
@@ -412,12 +420,17 @@ export default {
       })
     },
 
-    // 下一页数据
+    // 检索数据
     handleFilter(e) {
-      console.log(e)
-      // this.listQuery.page = 1
-      // this.getlist()
-      // this.groupoption()
+      if (this.listQuery.dateTime) {
+        let [begintime, endtime] = this.listQuery.dateTime
+        this.listQuery.begintime = parseInt(begintime / 1000)
+        this.listQuery.endtime = parseInt(endtime / 1000)
+      }
+
+      this.listQuery.page = 1
+      this.getlist()
+      this.groupoption()
     },
     getTagLable(data) {
       if (data === 0) {

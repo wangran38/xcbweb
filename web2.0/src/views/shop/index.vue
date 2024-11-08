@@ -73,7 +73,7 @@
       </el-table-column>
       <el-table-column label="创建" width="200px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.createtime | parseTime(row.createtime, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ initTime(row.createtime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
@@ -156,12 +156,12 @@
 
     <el-drawer :title="shopName" :visible.sync="table" direction="rtl" size="50%">
       <div class="top">
-        <div>总积分:{{ totalScore }}</div>
+        <div>总积分:{{ totalScore * 10 }}</div>
         <div>结算积分:{{ settlementPoints }}</div>
-        <div>未结算积分:{{ UnsettledPoints }}</div>
+        <div>未结算积分:{{ UnsettledPoints * 10 }}</div>
       </div>
       <el-table :data="rowDetail" height="400" :stripe="true" empty-text="暂无数据" v-loading="loading">
-        <el-table-column width="150" label="ID" align="center">
+        <el-table-column label="ID" align="center">
           <template slot-scope="{row}">
             <span>{{ row.id }}</span>
           </template>
@@ -171,19 +171,19 @@
             <span>{{ row.out_trade_no }}</span>
           </template>
         </el-table-column>
-        <el-table-column width="300" property="price" label="总价" align="center">
+        <el-table-column property="price" label="实际付款" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.price }}</span>
+            <span>{{ row.price }}元</span>
           </template>
         </el-table-column>
-        <el-table-column width="300" property="price" label="支付积分" align="center">
+        <el-table-column property="price" label="支付积分" align="center">
           <template slot-scope="{row}">
             <span>{{ row.payprice * 10 }}</span>
           </template>
         </el-table-column>
-        <el-table-column width="300" property="price" label="日期" align="center">
+        <el-table-column property="price" label="日期" align="center">
           <template slot-scope="{row}">
-            <span>{{ row.createtime }}</span>
+            <span>{{ initTime(row.createtime) }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -272,7 +272,6 @@ import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Tinymce from '@/components/Tinymce'
-
 
 // arr to obj, such as { CN : "China", US : "USA" }
 
@@ -372,6 +371,34 @@ export default {
     }
   },
   methods: {
+    initTime: (str) => {
+      let timestamp = new Date(str).getTime()
+      var time = String(timestamp).length === 10 ? new Date(parseInt(timestamp) * 1000) : new Date(parseInt(
+        timestamp))
+      var y = time.getFullYear() // 年
+      var m = time.getMonth() + 1 // 月
+      if (m < 10) {
+        m = '0' + m
+      }
+      var d = time.getDate() // 日
+      if (d < 10) {
+        d = '0' + d
+      }
+      var h = time.getHours() // 时
+      if (h < 10) {
+        h = '0' + h
+      }
+      var mm = time.getMinutes() // 分
+      if (mm < 10) {
+        mm = '0' + mm
+      }
+      var s = time.getSeconds() // 秒
+      if (s < 10) {
+        s = '0' + s
+      }
+      var timeStr = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
+      return timeStr
+    },
     // 翻页触发请求
     async paginationOrderList(query) {
       console.log(query)
