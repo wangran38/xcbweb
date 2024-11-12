@@ -76,7 +76,7 @@
             <span>{{ row.Createtime | parseTime(row.Createtime,'{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="中奖金额" width="200px" align="center">
+        <el-table-column label="赠送积分" width="200px" align="center">
           <template slot-scope="{row}">
             <span>{{ row.score }}</span>
           </template>
