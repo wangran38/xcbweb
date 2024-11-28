@@ -79,7 +79,7 @@
       </el-col>
       <el-col :span="6">
         <router-link to="/shop/sorce">
-          <el-card shadow="always">商家未结算积分:{{ dataInfo.lottery_sellsum }}分</el-card>
+          <el-card shadow="always">商家未结算积分:{{ dataInfo.lottery_sum }}分</el-card>
         </router-link>
       </el-col>
     </el-row>
@@ -92,11 +92,6 @@
       <el-col :span="6">
         <router-link to="/user/usersign">
           <el-card shadow="always">本周打卡人数:{{ dataInfo.sign_week_num }}人次</el-card>
-        </router-link>
-      </el-col>
-      <el-col :span="6">
-        <router-link to="/user/usersign">
-          <el-card shadow="always">本月打卡人数:{{ dataInfo.sign_month_num }}人次</el-card>
         </router-link>
       </el-col>
     </el-row>

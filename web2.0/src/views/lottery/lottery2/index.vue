@@ -4,21 +4,8 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         一键摇二等奖
       </el-button>
-      <!--<el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-          兑换积分
-        </el-button>-->
-      <!--<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-         添加
-        </el-button>-->
-      <!--<el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        下载表格
-        </el-button>-->
-      <!--<el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-          展开列表
-        </el-checkbox>-->
 
     </div>
-
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
       @sort-change="sortChange">
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80"
@@ -69,19 +56,12 @@
 
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <!--<el-button type="primary" size="mini" @click="handleUpdate(row)">
-              修改
-            </el-button>-->
-          <!--<el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-              详细
-            </el-button>-->
-          <!--<el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-              Draft
-            </el-button>-->
-          <el-button v-if="row.status != 'deleted'" size="mini" type="danger" :disabled="true"
-            @click="handleDelete(row, $index)">
-            删除
-          </el-button>
+          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
+            <el-button v-if="row.status != 'deleted'" size="mini" type="danger" :disabled="true"
+              @click="handleDelete(row, $index)">
+              删除
+            </el-button>
+          </el-table-column>
         </template>
       </el-table-column>
     </el-table>

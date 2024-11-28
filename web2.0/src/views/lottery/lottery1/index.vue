@@ -4,19 +4,6 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         一键摇一等奖
       </el-button>
-      <!--<el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-          兑换积分
-        </el-button>-->
-      <!--<el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-         添加
-        </el-button>-->
-      <!--<el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        下载表格
-        </el-button>-->
-      <!--<el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-          展开列表
-        </el-checkbox>-->
-
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
@@ -64,29 +51,42 @@
           <span>{{ row.score }}</span>
         </template>
       </el-table-column>
-      <!--<el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
+      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
+        <el-table-column label="市场名称" min-width="160px" align="center">
           <template slot-scope="{row}">
-            <span style="color:red;">{{ row.reviewer }}</span>
+            <span>{{ row.marketname }}</span>
           </template>
-        </el-table-column>-->
-      <!--<el-table-column label="Imp" width="80px">
-          <template slot-scope="{row}">
-            <svg-icon v-for="n in + row.avter" :key="n" icon-class="star" class="meta-item__icon" />
-          </template>
-        </el-table-column>-->
+        </el-table-column>
+      </el-table-column>
+      <el-table-column label="中奖名次" width="" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.type }}等奖</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="打卡记录" width="200px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.Createtime | parseTime(row.Createtime, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="赠送积分" width="200px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.score }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="开奖时间" width="160px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.Created | parseTime(row.Created, '{y}-{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
+        <template slot-scope="{row}">
+          <span style="color:red;">{{ row.reviewer }}</span>
+        </template>
+      </el-table-column>
 
 
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <!--<el-button type="primary" size="mini" @click="handleUpdate(row)">
-              修改
-            </el-button>-->
-          <!--<el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-              详细
-            </el-button>-->
-          <!--<el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-              Draft
-            </el-button>-->
           <el-button v-if="row.status != 'deleted'" size="mini" type="danger" :disabled="true"
             @click="handleDelete(row, $index)">
             删除
