@@ -91,7 +91,7 @@
       </el-col>
       <el-col :span="6">
         <router-link to="/user/usersign">
-          <el-card shadow="always">历史打卡人数:{{ dataInfo.sign_week_num }}人次</el-card>
+          <el-card shadow="always">本周打卡人数:{{ dataInfo.sign_week_num }}人次</el-card>
         </router-link>
       </el-col>
     </el-row>

@@ -81,6 +81,11 @@
             <span>{{ row.score }}</span>
           </template>
         </el-table-column>
+                 <el-table-column label="开奖时间" width="160px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.Created | parseTime(row.Created,'{y}-{m}-{d} {h}:{i}') }}</span>
+          </template>
+        </el-table-column>
         <!--<el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
           <template slot-scope="{row}">
             <span style="color:red;">{{ row.reviewer }}</span>
