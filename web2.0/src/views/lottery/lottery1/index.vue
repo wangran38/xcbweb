@@ -51,36 +51,9 @@
           <span>{{ row.score }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <el-table-column label="市场名称" min-width="160px" align="center">
-          <template slot-scope="{row}">
-            <span>{{ row.marketname }}</span>
-          </template>
-        </el-table-column>
-      </el-table-column>
-      <el-table-column label="中奖名次" width="" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.type }}等奖</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="打卡记录" width="200px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.Createtime | parseTime(row.Createtime, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="赠送积分" width="200px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.score }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="开奖时间" width="160px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.Created | parseTime(row.Created, '{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
         </template>
       </el-table-column>
 

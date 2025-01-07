@@ -51,17 +51,17 @@
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <router-link to="/lottery/lottery1">
-          <el-card shadow="always">开奖总积分: {{ dataInfo.lottery_sum }}元</el-card>
+          <el-card shadow="always">开奖总积分: {{ dataInfo.lottery_sum }}</el-card>
         </router-link>
       </el-col>
       <el-col :span="6">
         <router-link to="/lottery/lottery1">
-          <el-card shadow="always">消费积分: {{ dataInfo.lottery_sellsum }}分</el-card>
+          <el-card shadow="always">消费积分: {{ dataInfo.lottery_sellsum }}</el-card>
         </router-link>
       </el-col>
       <el-col :span="6">
         <router-link to="/lottery/lottery1">
-          <el-card shadow="always">未消费积分:{{ dataInfo.lottery_sum - dataInfo.lottery_sellsum }}分</el-card>
+          <el-card shadow="always">未消费积分:{{ dataInfo.lottery_sum - dataInfo.lottery_sellsum }}</el-card>
         </router-link>
       </el-col>
 
@@ -86,12 +86,17 @@
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <router-link to="/user/usersign">
-          <el-card shadow="always">今日打卡人数:{{ dataInfo.sign_num }}人次</el-card>
+          <el-card shadow="always">今日打卡次数:{{ dataInfo.sign_num }}次</el-card>
         </router-link>
       </el-col>
       <el-col :span="6">
         <router-link to="/user/usersign">
-          <el-card shadow="always">本周打卡人数:{{ dataInfo.sign_week_num }}人次</el-card>
+          <el-card shadow="always">本周打卡人数:{{ dataInfo.sign_week_num }}</el-card>
+        </router-link>
+      </el-col>
+      <el-col :span="6">
+        <router-link to="/user/usersign">
+          <el-card shadow="always">全部打卡:{{ dataInfo.sign_all_num }}次</el-card>
         </router-link>
       </el-col>
     </el-row>

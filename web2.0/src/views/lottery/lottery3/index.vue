@@ -38,7 +38,7 @@
           <span>{{ row.marketname }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="中奖名次" width="" align="center">
+      <el-table-column label="中奖名次" align="center">
         <template slot-scope="{row}">
           <span>{{ row.type }}等奖</span>
         </template>
@@ -48,7 +48,7 @@
           <span>{{ initTime(row.Createtime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="赠送积分" width="200px" align="center">
+      <el-table-column label="赠送积分" align="center">
         <template slot-scope="{row}">
           <span>{{ row.score }}</span>
         </template>
@@ -58,8 +58,6 @@
           <span>{{ row.Created | parseTime(row.Created, '{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-
-
 
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
