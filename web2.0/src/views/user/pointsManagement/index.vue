@@ -39,28 +39,26 @@
                 </template>
             </el-table-column>
 
-
-            <el-table-column label="积分明细的积分" align="center">
+            <el-table-column label="操作之前" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.after }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="消费积分" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.score }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="操作之前" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.before }}</span>
-                </template>
-            </el-table-column>
-
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <span @click="setQuery(2, row.isadd)">{{ row.isadd == 1 ? '新增积分' : '扣减积分' }}</span>
+                    <span @click="setQuery(2, row.isadd)">{{ row.isadd == 1 ? '新增' : '扣减' }}</span>
                 </template>
             </el-table-column>
 
             <el-table-column label="操作之后" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.after }}</span>
+                    <span>{{ row.before }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="创建日期" align="center" width="150">
@@ -69,11 +67,11 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="更新时间" align="center" width="150">
+            <!--<el-table-column label="更新时间" align="center" width="150">
                 <template slot-scope="{row}">
                     <span>{{ initTime(row.Updated) }}</span>
                 </template>
-            </el-table-column>
+            </el-table-column>-->
 
 
             <!-- <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
