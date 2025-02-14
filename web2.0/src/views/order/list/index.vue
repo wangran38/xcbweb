@@ -12,13 +12,18 @@
     <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
       <el-input v-model="listQuery.out_trade_no" placeholder="订单号" style="width: 200px" class="filter-item"
         @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.playClass" placeholder="支付方式">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
       <el-date-picker v-model="listQuery.dateTime" type="datetimerange" :picker-options="pickerOptions"
         range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" value-format="timestamp">
       </el-date-picker>
-
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         提交
       </el-button>
+
+
 
       <!--<el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         下载表格
@@ -301,8 +306,14 @@ export default {
       total: 0,
       listLoading: true,
 
+      options: [
+        { value: 0, label: '全部' },
+        { value: 1, label: '积分支付' },
+        { value: 2, label: '微信支付' },
+      ],
       // 请求参数
       listQuery: {
+        playClass: 0, // 支付凡是
         limit: 10,
         page: 1,
         // importance: undefined,
