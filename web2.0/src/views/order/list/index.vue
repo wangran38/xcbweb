@@ -12,7 +12,7 @@
     <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
       <el-input v-model="listQuery.out_trade_no" placeholder="订单号" style="width: 200px" class="filter-item"
         @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.playClass" placeholder="支付方式">
+      <el-select v-model="listQuery.pay_way" placeholder="支付方式">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
@@ -313,7 +313,7 @@ export default {
       ],
       // 请求参数
       listQuery: {
-        playClass: 0, // 支付凡是
+        pay_way: 0, // 支付方式
         limit: 10,
         page: 1,
         // importance: undefined,
