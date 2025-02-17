@@ -84,17 +84,23 @@
       </el-col>
     </el-row>-->
     <el-row :gutter="20" style="margin-top:40px;">
-      <el-col :span="6">
+      <el-col :span="5">
         <router-link to="/user/usersign">
           <el-card shadow="always">今日打卡:{{ dataInfo.sign_num }}次</el-card>
         </router-link>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="5">
+        <router-link to="/user/usersign">
+          <el-card shadow="always">本周打卡:{{ dataInfo.sign_week_cishu }}次</el-card>
+        </router-link>
+      </el-col>
+      <el-col :span="5">
         <router-link to="/user/usersign">
           <el-card shadow="always">本周打卡:{{ dataInfo.sign_week_num }}人</el-card>
         </router-link>
       </el-col>
-      <el-col :span="6">
+      
+      <el-col :span="5">
         <router-link to="/user/usersign">
           <el-card shadow="always">历史打卡:{{ dataInfo.sign_all_num }}次</el-card>
         </router-link>
