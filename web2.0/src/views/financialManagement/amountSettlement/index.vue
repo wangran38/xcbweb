@@ -10,18 +10,11 @@
                 添加
             </el-button>
         </div>
-
         <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
-            <el-input v-model="listQuery.kname" placeholder="Title" style="width: 200px" class="filter-item"
+            <el-input v-model.number="listQuery.kname" placeholder="手机号" style="width: 200px" class="filter-item"
                 @keyup.enter.native="handleFilter" />
-            <!--<el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-          <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-        </el-select>-->
-            <!--<el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
-          <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-        </el-select>-->
-            <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-                <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
+            <el-select v-model="listQuery.status" style="width: 140px" class="filter-item" @change="handleFilter">
+                <el-option v-for="item in statusOptions" :key="item.key" :label="item.label" :value="item.key" />
             </el-select>
 
             <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -50,7 +43,7 @@
       </el-table-column>-->
             <el-table-column label="申请人" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.username }}</span>
+                    <span>{{ row.bankusername }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="联系电话" width="110" align="center">
@@ -70,7 +63,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="银行卡卡号" width="150" align="center">
+            <el-table-column label="银行卡卡号" width="180" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.banknumber }}</span>
                 </template>
@@ -92,7 +85,7 @@
             </el-table-column>
             <el-table-column label="申请时间" width="200px" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.Created | parseTime(row.Created, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
+                    <span>{{ initTime(row.Created) | initTime(row.Created, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
@@ -158,7 +151,6 @@
                 </el-form-item>
 
 
-                </el-form-item>
                 <el-form-item label="是否显示" prop="isshow">
                     <el-switch v-model="temp.isshow" :active-value='1' :inactive-value='0'>
                     </el-switch>
@@ -259,6 +251,7 @@ import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Tinymce from '@/components/Tinymce'
+import {myMixin} from '@/utils/public'
 
 
 // arr to obj, such as { CN : "China", US : "USA" }
@@ -267,6 +260,7 @@ import Tinymce from '@/components/Tinymce'
 
 export default {
     name: '',
+  mixins:[myMixin],
     components: { Pagination, Tinymce },
     directives: { waves },
     filters: {
@@ -295,11 +289,11 @@ export default {
                 importance: undefined,
                 username: undefined,
                 categroy_id: undefined,
-                sort: '+id'
+                status: null
             },
             importanceOptions: [1, 2, 3],
-            sortOptions: [{ label: 'ID 升序', key: '+id' }, { label: 'ID 倒序', key: '-id' }],
-            statusOptions: ['published', 'draft', 'deleted'],
+            statusOptions: [{ label: '申请中', key: 1 }, { label: '已支付', key: 2 }],
+            // statusOptions: ['published', 'draft', 'deleted'],
             showReviewer: false,
             temp: {
                 id: undefined,

@@ -14,3 +14,13 @@ export function upshopsorce(params) {
     data: params
   })
 }
+
+
+// 积分结算
+export function changesorce(params) {
+  return request({
+    url: '/admin/shop/changesorce',
+    method: 'post',
+    data: params
+  })
+}

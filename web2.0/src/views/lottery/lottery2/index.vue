@@ -55,89 +55,25 @@
 
       <el-table-column label="开奖时间" width="160px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.Created | parseTime(row.Created, '{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ initTime(row.Created)}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
-            <el-button v-if="row.status != 'deleted'" size="mini" type="danger" :disabled="true"
-              @click="handleDelete(row, $index)">
-              删除
-            </el-button>
-          </el-table-column>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">-->
+<!--        <template slot-scope="{row,$index}">-->
+<!--          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">-->
+<!--            <el-button v-if="row.status != 'deleted'" size="mini" type="danger" :disabled="true"-->
+<!--              @click="handleDelete(row, $index)">-->
+<!--              删除-->
+<!--            </el-button>-->
+<!--          </el-table-column>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
       @pagination="getsignlistgroup" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :width="'60%'">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px"
-        style="width: 90%; margin-left:50px;">
 
-        <el-form-item label="所属上级" prop="fid">
-          <el-cascader :options="optionsdata"
-            :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
-            clearable v-model="temp.categroy_id" value-key="id" @focus="groupoption" @onchange="groupoption"
-            placeholder="顶级菜单">
-          </el-cascader>
-        </el-form-item>
-        <!--<el-form-item label="Date" prop="timestamp">
-            <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-          </el-form-item>-->
-        <el-form-item label="信息标题" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="信息图片" prop="image">
-          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="this.temp.image" :src="temp.image" class="avatar">
-
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <el-input v-model="temp.image" type="hidden" />
-        </el-form-item>
-        <el-form-item label="关键字" prop="keywords">
-          <el-input v-model="temp.keywords" />
-        </el-form-item>
-
-
-        <!--<el-form-item label="详细说明" prop="content">-->
-        <!--<el-input type="textarea" :rows="2" v-model="temp.content" />-->
-        <el-form-item prop="content" style="margin-bottom: 30px;">
-          <Tinymce ref="editor" v-model="temp.content" :height="500" />
-        </el-form-item>
-
-
-
-        <el-form-item label="是否显示" prop="isshow">
-          <el-switch v-model="temp.isshow" :active-value='1' :inactive-value='0'>
-          </el-switch>
-        </el-form-item>
-
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
-          提交
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <style>
@@ -214,16 +150,15 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Tinymce from '@/components/Tinymce'
 
+import {myMixin} from "@/utils/public";
 
-// arr to obj, such as { CN : "China", US : "USA" }
-
-import request from '@/utils/request'
 
 
 export default {
   //讲师列表
 
   name: '',
+  mixins:[myMixin],
   components: { Pagination, Tinymce },
   directives: { waves },
   filters: {
@@ -292,34 +227,6 @@ export default {
     this.getlotteryrecordlist()
   },
   methods: {
-    initTime(str) {
-      let timestamp = new Date(str).getTime()
-      var time = String(timestamp).length === 10 ? new Date(parseInt(timestamp) * 1000) : new Date(parseInt(
-        timestamp))
-      var y = time.getFullYear() // 年
-      var m = time.getMonth() + 1 // 月
-      if (m < 10) {
-        m = '0' + m
-      }
-      var d = time.getDate() // 日
-      if (d < 10) {
-        d = '0' + d
-      }
-      var h = time.getHours() // 时
-      if (h < 10) {
-        h = '0' + h
-      }
-      var mm = time.getMinutes() // 分
-      if (mm < 10) {
-        mm = '0' + mm
-      }
-      var s = time.getSeconds() // 秒
-      if (s < 10) {
-        s = '0' + s
-      }
-      var timeStr = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
-      return timeStr
-    },
     getlotteryrecordlist() {
       this.listLoading = true
       getlotteryrecordlist(this.listQuery).then(response => {

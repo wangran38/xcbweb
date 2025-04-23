@@ -1,37 +1,26 @@
 <template>
   <div class="app-container">
-    <div style="margin: 0 0 2% 0">
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="searchSeen = !searchSeen">
-        查找
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加
-      </el-button>
+    <div style="margin: 0 0 2% 0;display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="searchSeen = !searchSeen">
+          查找
+        </el-button>
+      </div>
+      <div>已付合计金额:{{ sumall / 10 }}元</div>
     </div>
 
+
     <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
-      <el-input v-model="listQuery.kname" placeholder="Title" style="width: 200px" class="filter-item"
+      <el-input v-model.number="listQuery.kname" placeholder="手机号" style="width: 200px" class="filter-item"
         @keyup.enter.native="handleFilter" />
-      <!--<el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-          <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-        </el-select>-->
-      <!--<el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
-          <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-        </el-select>-->
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-select v-model="listQuery.status" style="width: 140px" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in statusOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         提交
       </el-button>
 
-      <!--<el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        下载表格
-        </el-button>-->
-      <!--<el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-          展开列表
-        </el-checkbox>-->
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
       @sort-change="sortChange">
@@ -41,11 +30,6 @@
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <!--<el-table-column label="申请人" width="110px" align="center">
-        <template slot-scope="{row}">
-         <el-avatar :src="row.user"></el-avatar>
-        </template>
-      </el-table-column>-->
       <el-table-column label="申请人" align="center">
         <template slot-scope="{row}">
           <span>{{ row.username }}</span>
@@ -61,7 +45,7 @@
           <span>{{ row.before }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="申请积分" width="60" align="center">
+      <el-table-column label="申请积分" width="80" align="center">
         <template slot-scope="{row}">
           <span>{{ row.shopscore }}</span>
         </template>
@@ -83,27 +67,17 @@
       </el-table-column>
       <el-table-column label="申请时间" width="200px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.Created | parseTime(row.Created, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span>{{ initTime(row.Created) | initTime(row.Created, '{Y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button v-if="row.status != 'published'" size="mini" type="success"
-            @click="handleModifyStatus(row, 'published')">
+          <el-button v-if="row.status != 'published'" size="mini" type="success" @click="handleCreate(row)">
             详细
           </el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(row, $index)">
             结清操作
           </el-button>
-          <!--<el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-              详细
-            </el-button>-->
-          <!--<el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-              Draft
-            </el-button>-->
-          <!--<el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-              删除
-            </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -111,60 +85,29 @@
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
       @pagination="getshopsorcelist" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :width="'60%'">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px"
-        style="width: 90%; margin-left:50px;">
-
-        <el-form-item label="所属上级" prop="fid">
-          <el-cascader :options="optionsdata"
-            :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
-            clearable v-model="temp.categroy_id" value-key="id" @focus="groupoption" @onchange="groupoption"
-            placeholder="顶级菜单">
-          </el-cascader>
-        </el-form-item>
-        <!--<el-form-item label="Date" prop="timestamp">
-            <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-          </el-form-item>-->
-        <el-form-item label="信息标题" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="信息图片" prop="image">
-          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="this.temp.image" :src="temp.image" class="avatar">
-
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <el-input v-model="temp.image" type="hidden" />
-        </el-form-item>
-        <el-form-item label="关键字" prop="keywords">
-          <el-input v-model="temp.keywords" />
-        </el-form-item>
-
-
-        <!--<el-form-item label="详细说明" prop="content">-->
-        <!--<el-input type="textarea" :rows="2" v-model="temp.content" />-->
-        <el-form-item prop="content" style="margin-bottom: 30px;">
-          <Tinymce ref="editor" v-model="temp.content" :height="500" />
-        </el-form-item>
-
-
-        </el-form-item>
-        <el-form-item label="是否显示" prop="isshow">
-          <el-switch v-model="temp.isshow" :active-value='1' :inactive-value='0'>
-          </el-switch>
-        </el-form-item>
-
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
-          提交
-        </el-button>
+    <el-dialog :title="'详细'" :visible.sync="dialogFormVisible" :width="'60%'">
+      <div style="display: flex; padding: 5px;">
+        <div style="width: 90px; line-height: 40px; font-size:17px;">姓名:</div><el-input :disabled="true"
+          v-model="infoData.bankusername"></el-input>
       </div>
+
+      <div style="display: flex; padding: 5px; text-align: left;">
+        <div style="width: 90px; line-height: 40px; font-size:17px; text-align: left;">卡号:</div><el-input
+          :disabled="true" v-model="infoData.banknumber" style="text-align: right;"></el-input>
+      </div>
+      <div style="display: flex; padding: 5px;">
+        <div style="width: 90px; line-height: 40px; font-size:17px;">手机号:</div><el-input :disabled="true"
+          v-model="infoData.phone"></el-input>
+      </div>
+      <div style="display: flex; padding: 5px; text-align: left;">
+        <div style="width: 90px; line-height: 40px; font-size:17px; text-align: left;">开户行:</div><el-input
+          :disabled="true" v-model="infoData.bankaddress" style="text-align: right;"></el-input>
+      </div>
+      <div style="display: flex; padding: 5px; text-align: left;">
+        <div style="width: 90px; line-height: 40px; font-size:17px; text-align: left;">银行名称:</div><el-input
+          :disabled="true" v-model="infoData.bankname" style="text-align: right;"></el-input>
+      </div>
+
     </el-dialog>
 
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
@@ -179,6 +122,11 @@
   </div>
 </template>
 <style>
+.el-input.is-disabled .el-input__inner {
+  color: black;
+  font-size: 17px;
+}
+
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -245,12 +193,13 @@
 }
 </style>
 <script>
-import { getshopsorcelist, upshopsorce } from '@/api/shop/sorce'
+import { getshopsorcelist, upshopsorce, changesorce } from '@/api/shop/sorce'
 import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Tinymce from '@/components/Tinymce'
 
+import {myMixin} from '@/utils/public'
 
 // arr to obj, such as { CN : "China", US : "USA" }
 
@@ -259,7 +208,7 @@ import request from '@/utils/request'
 
 export default {
   //讲师列表
-
+  mixins:[myMixin],
   name: '',
   components: { Pagination, Tinymce },
   directives: { waves },
@@ -278,6 +227,8 @@ export default {
   },
   data() {
     return {
+      infoData: {}, // 查看详细信息
+      sumall: null, // 已经结算的积分总金额
       searchSeen: false,
       tableKey: 0,
       list: null,
@@ -289,11 +240,11 @@ export default {
         importance: undefined,
         username: undefined,
         categroy_id: undefined,
-        sort: '+id'
+        status: null
       },
       importanceOptions: [1, 2, 3],
-      sortOptions: [{ label: 'ID 升序', key: '+id' }, { label: 'ID 倒序', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
+      statusOptions: [{ label: '申请中', key: 1 }, { label: '已支付', key: 2 }],
+      // statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -308,10 +259,6 @@ export default {
       imgurl: '',
       dialogFormVisible: false,
       dialogStatus: '',
-      textMap: {
-        update: '编辑',
-        create: '新增'
-      },
       dialogPvVisible: false,
       pvData: [],
       rules: {
@@ -325,17 +272,22 @@ export default {
 
   },
   created() {
-    this.getshopsorcelist(),
-      this.groupoption()
+    this.getshopsorcelist()
+    // this.groupoption()
+    this.getChangesorceData()
+
   },
   methods: {
+    getChangesorceData() {
+      changesorce({}).then(data => {
+        this.sumall = data.data.sumall
+      })
+    },
     getshopsorcelist() {
       this.listLoading = true
       getshopsorcelist(this.listQuery).then(response => {
         this.list = response.data.listdata
         this.total = response.data.totalnum
-
-        // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -344,15 +296,8 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getshopsorcelist()
-      this.groupoption()
+      // this.groupoption()
     },
-    // handleModifyStatus(row, status) {
-    //   this.$message({
-    //     message: '操作Success',
-    //     type: 'success'
-    //   })
-    //   row.status = status
-    // },
     sortChange(data) {
       const { prop, order } = data
       if (prop === 'Id') {
@@ -379,13 +324,15 @@ export default {
         content: '',
       }
     },
-    handleCreate() {
+    handleCreate(row) {
+      console.log(row)
+      this.infoData = row
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      // this.$nextTick(() => {
+      //   this.$refs['dataForm'].clearValidate()
+      // })
     },
     createData() {
 

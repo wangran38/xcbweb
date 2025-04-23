@@ -1,97 +1,84 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" style="margin:0 0 2% 0;">
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        一键摇三等奖
+    <div style="margin: 0 0 2% 0">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search"
+                 @click="searchSeen = !searchSeen">
+        查找
       </el-button>
-
-
+      <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit"
+                 @click="handleCreate">
+        添加
+      </el-button>
     </div>
+    <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
+      <el-input v-model.number="listQuery.kname" placeholder="手机号" style="width: 200px" class="filter-item"
+                @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.status" style="width: 140px" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in statusOptions" :key="item.key" :label="item.label" :value="item.key" />
+      </el-select>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
-      @sort-change="sortChange">
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80"
-        :class-name="getSortClass('id')">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        提交
+      </el-button>
+    </div>
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
+              style="width: 100%;" @sort-change="sortChange">
+      <el-table-column label="市场名称" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.Id }}</span>
+          <span>{{ row.market_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="中奖ID" prop="id" sortable="custom" align="center" width="80"
-        :class-name="getSortClass('id')">
+      <el-table-column label="地区名称" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.usersign_id }}</span>
+          <span>{{ row.area_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户id" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.user_id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户手机" width="" align="center">
+      <el-table-column label="联系电话" align="center">
         <template slot-scope="{row}">
           <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="市场名称" min-width="160px" align="center">
+      <el-table-column label="农户名称" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.marketname }}</span>
+          <span>{{ row.farmersname }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="中奖名次" align="center">
+      <el-table-column label="创建时间" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.type }}等奖</span>
+          <span>{{ initTime(row.createtime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="打卡记录" width="200px" align="center">
+      <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <span>{{ initTime(row.Createtime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="赠送积分" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.score }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="开奖时间" width="160px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ initTime(row.Created)}}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button v-if="row.status != 'deleted'" size="mini" type="danger" :disabled="true"
-            @click="handleDelete(row, $index)">
-            删除
-          </el-button>
+          <el-button type="primary">编辑</el-button>
+          <el-button type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-      @pagination="getsignlistgroup" />
+                @pagination="getfarmerslist" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :width="'60%'">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px"
-        style="width: 90%; margin-left:50px;">
+               style="width: 90%; margin-left:50px;">
 
         <el-form-item label="所属上级" prop="fid">
           <el-cascader :options="optionsdata"
-            :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
-            clearable v-model="temp.categroy_id" value-key="id" @focus="groupoption" @onchange="groupoption"
-            placeholder="顶级菜单">
+                       :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
+                       clearable v-model="temp.categroy_id" value-key="id"
+                       placeholder="顶级菜单">
           </el-cascader>
         </el-form-item>
         <!--<el-form-item label="Date" prop="timestamp">
-            <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-          </el-form-item>-->
+    <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
+  </el-form-item>-->
         <el-form-item label="信息标题" prop="title">
           <el-input v-model="temp.title" />
         </el-form-item>
         <el-form-item label="信息图片" prop="image">
-          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload"
+                     :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="this.temp.image" :src="temp.image" class="avatar">
 
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -108,7 +95,6 @@
         <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" v-model="temp.content" :height="500" />
         </el-form-item>
-
 
 
         <el-form-item label="是否显示" prop="isshow">
@@ -134,8 +120,8 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
+                <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+            </span>
     </el-dialog>
   </div>
 </template>
@@ -206,21 +192,15 @@
 }
 </style>
 <script>
-import { getlottery3list } from '@/api/lottery/lottery3'
-import { getlotteryrecordlist } from '@/api/lottery/lotterylist'
+import { farmerslist } from '@/api/farmers'
 import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
-
-
-import {myMixin} from "@/utils/public";
-
+import {myMixin} from '@/utils/public'
 
 
 export default {
-  //讲师列表
-
   name: '',
   mixins:[myMixin],
   components: { Pagination, Tinymce },
@@ -240,22 +220,22 @@ export default {
   },
   data() {
     return {
+      searchSeen: false,
       tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
       listQuery: {
-        limit: 10,
+        limit: 20,
         page: 1,
-        type: 3,
         importance: undefined,
         username: undefined,
         categroy_id: undefined,
-        sort: '+id'
+        status: null
       },
       importanceOptions: [1, 2, 3],
-      sortOptions: [{ label: 'ID 升序', key: '+id' }, { label: 'ID 倒序', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
+      statusOptions: [{ label: '申请中', key: 1 }, { label: '已支付', key: 2 }],
+      // statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
         id: undefined,
@@ -287,29 +267,15 @@ export default {
 
   },
   created() {
-    this.getlotteryrecordlist()
+    this.getfarmerslist()
+    // this.groupoption()
   },
   methods: {
-    getlotteryrecordlist() {
+    getfarmerslist() {
       this.listLoading = true
-      getlotteryrecordlist(this.listQuery).then(response => {
+      farmerslist(this.listQuery).then(response => {
         this.list = response.data.listdata
         this.total = response.data.totalnum
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
-      })
-    },
-    getlottery3list() {
-      this.listLoading = true
-      getlottery3list(this.listQuery).then(response => {
-        this.getlotteryrecordlist()
-        //   this.list = response.data.listdata
-        //   this.total = response.data.totalnum
-
-        // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -317,19 +283,12 @@ export default {
     },
     handleFilter() {
       this.listQuery.page = 1
-      this.getlotteryrecordlist(),
-        this.getlottery3list()
+      this.getfarmerslist()
+      this.groupoption()
     },
-    // handleModifyStatus(row, status) {
-    //   this.$message({
-    //     message: '操作Success',
-    //     type: 'success'
-    //   })
-    //   row.status = status
-    // },
     sortChange(data) {
       const { prop, order } = data
-      if (prop === 'id') {
+      if (prop === 'Id') {
         this.sortByID(order)
       }
     },
@@ -375,7 +334,7 @@ export default {
                 type: 'success',
                 duration: 2000
               })
-              this.getsignlistgroup();
+              this.getshopsorcelist();
             } else {
               this.$message.error('数据添加失败！');
               // this.$message.error('添加数据失败！');
@@ -388,46 +347,14 @@ export default {
       })
     },
 
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          //处理父级ID
-
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          edit(tempData).then(() => {
-            const index = this.list.findIndex(v => v.id === this.temp.id)
-            this.list.splice(index, 1, this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Success',
-              message: '更新 Successfully',
-              type: 'success',
-              duration: 2000
-            })
-            this.getsignlistgroup();
-          })
-        }
-      })
-    },
-    /* 删除按钮*/
-    handleDelete(row, index) {
-      this.$confirm('确定要删除【' + row.title + '】吗？', '提示', {
+    handleUpdate(row, index) {
+      this.$confirm('确定要结清吗', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        del(row).then((response) => {
+        row.status = 2
+        upshopmoney(row).then((response) => {
           // alert(index);
           // console.log(response);
           if (response.code == 200) {
@@ -438,70 +365,18 @@ export default {
               type: 'success',
               duration: 2000
             })
-            this.list.splice(index, 1)
+            this.getshopsorcelist()
+            // this.list.splice(index, 1)
           } else {
             this.$message.error('删除数据失败！');
             // this.reload();
           }
         })
       })
+    },
 
-    },
-    //头像上传
-    handleAvatarSuccess(res, file) {
-      this.imgurl = URL.createObjectURL(file.raw);
-      this.temp.image = res;
-      // console.log(this.temp.image)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpg';
-      const isPng = file.type === "image/png";
-      const isJpeg = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG & !isPng & !isJpeg) {
-        this.$message.error('上传头像图片只能是图片格式!');
-        return false
-      }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-        return false
-      }
-      return true;
-    },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
-      })
-    },
-    formatJson(filterVal) {
-      return this.list.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
-    },
-    getSortClass: function (key) {
-      const sort = this.listQuery.sort
-      return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+
   }
 }
 </script>

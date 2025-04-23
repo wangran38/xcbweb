@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column label="开奖时间" width="160px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.Created | parseTime(row.Created, '{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ initTime(row.Created) }}</span>
         </template>
       </el-table-column>
 
@@ -212,16 +212,16 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Tinymce from '@/components/Tinymce'
 
+import {myMixin} from "@/utils/public";
 
-// arr to obj, such as { CN : "China", US : "USA" }
 
-import request from '@/utils/request'
 
 
 export default {
   //讲师列表
 
   name: '',
+  mixins:[myMixin],
   components: { Pagination, Tinymce },
   directives: { waves },
   filters: {
@@ -289,34 +289,6 @@ export default {
     this.getlotteryrecordlist()
   },
   methods: {
-    initTime(str) {
-      let timestamp = new Date(str).getTime()
-      var time = String(timestamp).length === 10 ? new Date(parseInt(timestamp) * 1000) : new Date(parseInt(
-        timestamp))
-      var y = time.getFullYear() // 年
-      var m = time.getMonth() + 1 // 月
-      if (m < 10) {
-        m = '0' + m
-      }
-      var d = time.getDate() // 日
-      if (d < 10) {
-        d = '0' + d
-      }
-      var h = time.getHours() // 时
-      if (h < 10) {
-        h = '0' + h
-      }
-      var mm = time.getMinutes() // 分
-      if (mm < 10) {
-        mm = '0' + mm
-      }
-      var s = time.getSeconds() // 秒
-      if (s < 10) {
-        s = '0' + s
-      }
-      var timeStr = y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s
-      return timeStr
-    },
     getlotteryrecordlist() {
       this.listLoading = true
       getlotteryrecordlist(this.listQuery).then(response => {

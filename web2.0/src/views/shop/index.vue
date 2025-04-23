@@ -80,7 +80,7 @@
         <template slot-scope="{row,$index}">
           <el-button @click="viewDetail(row)" slot="reference" v-if="row.status != 'published'" size="mini"
             type="success">
-            详细
+            订单明细
           </el-button>
 
         </template>
@@ -156,9 +156,9 @@
 
     <el-drawer :title="shopName" :visible.sync="table" direction="rtl" size="50%">
       <div class="top">
-        <div>总积分:{{ totalScore * 10 }}</div>
-        <div>结算积分:{{ settlementPoints }}</div>
-        <div>未结算积分:{{ UnsettledPoints * 10 }}</div>
+        <div>总积分:{{ (totalScore * 10).toFixed(2) }}</div>
+        <div>结算积分:{{ (settlementPoints).toFixed(2) }}</div>
+        <div>未结算积分:{{ (UnsettledPoints * 10).toFixed(2) }}</div>
       </div>
       <el-table :data="rowDetail" height="400" :stripe="true" empty-text="暂无数据" v-loading="loading">
         <el-table-column label="ID" align="center">
