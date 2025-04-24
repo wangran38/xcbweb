@@ -14,6 +14,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import '@wangeditor/editor/dist/css/style.css'
 /*百度编辑器 */
 // import '../public/static/ue/ueditor.config.js'
 // import '../public/static/ue/ueditor.parse.js'

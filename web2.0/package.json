@@ -14,7 +14,11 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
+    "@toast-ui/editor": "^3.2.2",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-vue": "^1.0.2",
     "axios": "0.18.1",
+    "codemirror": "^5.65.16",
     "core-js": "3.6.5",
     "element-ui": "2.13.2",
     "file-saver": "^2.0.5",
@@ -30,6 +34,7 @@
     "vue": "2.6.10",
     "vue-router": "3.0.6",
     "vuex": "3.1.0",
+    "wangeditor": "^4.7.15",
     "xlsx": "^0.18.5",
     "xxx": "^0.0.1"
   },
