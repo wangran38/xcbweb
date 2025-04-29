@@ -11,10 +11,9 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-
+import '@wangeditor/editor/dist/css/style.css'
 import '@/icons' // icon
 import '@/permission' // permission control
-import '@wangeditor/editor/dist/css/style.css'
 /*百度编辑器 */
 // import '../public/static/ue/ueditor.config.js'
 // import '../public/static/ue/ueditor.parse.js'

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
+  <div :class="{ fullscreen: fullscreen }" class="tinymce-container" :style="{ width: containerWidth }">
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
@@ -8,17 +8,14 @@
 </template>
 
 <script>
-/**
- * docs:
- * https://panjiachen.github.io/vue-element-admin-site/feature/component/rich-editor.html#tinymce
- */
 import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+// const tinymceCDN = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/4.9.3-30/tinymce.min.js'    // 需要替换cdn链接
+const tinymceCDN = window.location.origin + '/tinymce/tinymce.js'    // 需要替换cdn链接
 
 export default {
   name: 'Tinymce',
@@ -26,7 +23,7 @@ export default {
   props: {
     id: {
       type: String,
-      default: function() {
+      default: function () {
         return 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
       }
     },
@@ -116,7 +113,8 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
-        language: this.languageTypeList['en'],
+        // language: this.languageTypeList['zh']   切换
+        language_url: window.location.origin + '/tinymce/zh_CN.js',
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
