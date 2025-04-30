@@ -1,18 +1,16 @@
 <template>
   <div class="app-container">
     <div style="margin: 0 0 2% 0">
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search"
-                 @click="searchSeen = !searchSeen">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="searchSeen = !searchSeen">
         查找
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit"
-                 @click="handleCreate">
+      <el-button class="filter-item" style="margin-left: 10px" type="primary" icon="el-icon-edit" @click="handleCreate">
         添加
       </el-button>
     </div>
     <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
       <el-input v-model.number="listQuery.kname" placeholder="手机号" style="width: 200px" class="filter-item"
-                @keyup.enter.native="handleFilter" />
+        @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.status" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in statusOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -21,14 +19,19 @@
         提交
       </el-button>
     </div>
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
-              style="width: 100%;" @sort-change="sortChange">
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
+      @sort-change="sortChange">
       <el-table-column label="市场名称" align="center">
         <template slot-scope="{row}">
           <span>{{ row.market_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="地区名称" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.area_name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="详细地址" align="center">
         <template slot-scope="{row}">
           <span>{{ row.area_name }}</span>
         </template>
@@ -57,17 +60,16 @@
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-                @pagination="getfarmerslist" />
+      @pagination="getfarmerslist" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :width="'60%'">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px"
-               style="width: 90%; margin-left:50px;">
+        style="width: 90%; margin-left:50px;">
 
         <el-form-item label="所属上级" prop="fid">
           <el-cascader :options="optionsdata"
-                       :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
-                       clearable v-model="temp.categroy_id" value-key="id"
-                       placeholder="顶级菜单">
+            :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
+            clearable v-model="temp.categroy_id" value-key="id" placeholder="顶级菜单">
           </el-cascader>
         </el-form-item>
         <!--<el-form-item label="Date" prop="timestamp">
@@ -77,8 +79,8 @@
           <el-input v-model="temp.title" />
         </el-form-item>
         <el-form-item label="信息图片" prop="image">
-          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload"
-                     :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload" :show-file-list="false"
+            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="this.temp.image" :src="temp.image" class="avatar">
 
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -120,8 +122,8 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-            </span>
+        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -197,12 +199,12 @@ import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
-import {myMixin} from '@/utils/public'
+import { myMixin } from '@/utils/public'
 
 
 export default {
   name: '',
-  mixins:[myMixin],
+  mixins: [myMixin],
   components: { Pagination, Tinymce },
   directives: { waves },
   filters: {

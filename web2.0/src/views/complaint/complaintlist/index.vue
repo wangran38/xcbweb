@@ -17,19 +17,29 @@
                     <span>{{ row.id }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="资讯类型" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.category_name }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="标题" align="center">
+            <el-table-column label="投诉标题" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.title }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="描述" align="center">
+            <el-table-column label="所属菜市场" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.description }}</span>
+                    <span>{{ row.marketname }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="投诉用户" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.username }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="被投诉商家" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.shop_name }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="投诉用户电话" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.userphone }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="创建时间" align="center">
@@ -37,31 +47,23 @@
                     <span>{{ initTime(row.createtime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+
+            <el-table-column label="投诉详情" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.content }}</span>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
                     <el-button type="primary" @click="editItem(row)">编辑</el-button>
                     <el-button type="danger" @click="deleteData(row.id)">删除</el-button>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
 
         <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-            @pagination="getnewsList" />
+            @pagination="getComplaintList" />
 
-
-        <el-drawer title="编辑资讯" :visible.sync="drawer" :direction="direction" :before-close="handleClose">
-            <div style="height: 100vh; overflow-y: auto;">
-                <el-input v-model="formData.title" placeholder="请输入标题"></el-input>
-                <el-input type="textarea" v-model="formData.description" placeholder="请简要描述" height="50px"></el-input>
-                <el-input v-model="formData.category_name" placeholder="请输入资讯分类"></el-input>
-                <div style="margin: 5px;">
-                    <el-button type="success" @click="updateData">修改</el-button>
-                </div>
-                <Toolbar style="border-bottom: 1px solid #ccc" mode="default" />
-                <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
-                    @onCreated="onCreated" />
-            </div>
-        </el-drawer>
     </div>
 </template>
 <style>
@@ -132,7 +134,7 @@
 </style>
 <script>
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { editNews, newsList, delNews } from '@/api/informationManagement'
+import { complaintList } from '@/api/complaint'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
@@ -146,13 +148,6 @@ export default {
     directives: { waves },
     data() {
         return {
-            formData: {
-                category_name: '',
-                title: '',
-                keywords: '',
-                description: '',
-                content: '',
-            },
             drawer: false,
             direction: 'rtl', // 抽屉展开方向
             searchSeen: false,
@@ -196,40 +191,9 @@ export default {
 
     },
     created() {
-        this.getnewsList()
+        this.getComplaintList()
     },
     methods: {
-        async updateData() {
-            let data = await editNews(this.formData)
-            if (data.code == 200) {
-                this.$notify({
-                    title: '修改成功',
-                    message: '修改成功',
-                    type: 'success',
-                    duration: 2000
-                })
-                this.drawer = false
-                this.getnewsList()
-            } else {
-                this.$notify({
-                    title: 'Error',
-                    message: data.msg,
-                    type: 'error',
-                    duration: 2000
-                })
-            }
-        },
-        editItem(item) {
-            this.drawer = true
-            if (item) {
-                this.formData.title = item.title
-                this.formData.description = item.description
-                this.formData.category_name = item.category_name
-                this.formData.content = item.content
-                this.formData.id = item.id
-            }
-            console.log(item)
-        },
         onCreated(editor) {
             this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
         },
@@ -240,9 +204,9 @@ export default {
                 })
                 .catch(_ => { });
         },
-        getnewsList() {
+        getComplaintList() {
             this.listLoading = true
-            newsList(this.listQuery).then(response => {
+            complaintList(this.listQuery).then(response => {
                 this.list = response.data.listdata
                 this.total = response.data.totalnum
                 setTimeout(() => {
