@@ -53,8 +53,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button type="primary">编辑</el-button>
-          <el-button type="danger">删除</el-button>
+          <el-button type="primary" size="small">编辑</el-button>
+          <el-button type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -63,49 +63,11 @@
       @pagination="getfarmerslist" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" :width="'60%'">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px"
-        style="width: 90%; margin-left:50px;">
-
-        <el-form-item label="所属上级" prop="fid">
-          <el-cascader :options="optionsdata"
-            :props="{ checkStrictly: true, label: 'title', value: 'id', children: 'Children', emitPath: 'false' }"
-            clearable v-model="temp.categroy_id" value-key="id" placeholder="顶级菜单">
-          </el-cascader>
-        </el-form-item>
-        <!--<el-form-item label="Date" prop="timestamp">
-    <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-  </el-form-item>-->
-        <el-form-item label="信息标题" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="信息图片" prop="image">
-          <el-upload class="avatar-uploader" action="http://img.szhfair.com/group1/upload" :show-file-list="false"
-            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-            <img v-if="this.temp.image" :src="temp.image" class="avatar">
-
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          <el-input v-model="temp.image" type="hidden" />
-        </el-form-item>
-        <el-form-item label="关键字" prop="keywords">
-          <el-input v-model="temp.keywords" />
-        </el-form-item>
 
 
-        <!--<el-form-item label="详细说明" prop="content">-->
-        <!--<el-input type="textarea" :rows="2" v-model="temp.content" />-->
-        <el-form-item prop="content" style="margin-bottom: 30px;">
-          <Tinymce ref="editor" v-model="temp.content" :height="500" />
-        </el-form-item>
-
-
-        <el-form-item label="是否显示" prop="isshow">
-          <el-switch v-model="temp.isshow" :active-value='1' :inactive-value='0'>
-          </el-switch>
-        </el-form-item>
-
-
-      </el-form>
+      <Toolbar style="border-bottom: 1px solid #ccc;" :editor="null" mode="default" />
+      <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
+        @onCreated="onCreated" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           取消
@@ -194,6 +156,7 @@
 }
 </style>
 <script>
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { farmerslist } from '@/api/farmers'
 import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
@@ -205,7 +168,7 @@ import { myMixin } from '@/utils/public'
 export default {
   name: '',
   mixins: [myMixin],
-  components: { Pagination, Tinymce },
+  components: { Pagination, Editor, Toolbar },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -222,6 +185,13 @@ export default {
   },
   data() {
     return {
+      formData: {
+        category_name: '',
+        title: '',
+        keywords: '',
+        description: '',
+        content: '',
+      },
       searchSeen: false,
       tableKey: 0,
       list: null,
@@ -273,6 +243,9 @@ export default {
     // this.groupoption()
   },
   methods: {
+    onCreated(editor) {
+      this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+    },
     getfarmerslist() {
       this.listLoading = true
       farmerslist(this.listQuery).then(response => {

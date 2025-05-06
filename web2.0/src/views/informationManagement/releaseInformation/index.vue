@@ -18,15 +18,15 @@
         <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" :defaultConfig="editorConfig"
             :mode="mode" @onCreated="onCreated" />
         <div style="margin: 5px;">
-            <el-button type="success" @click="release">发布资讯</el-button>
-            <el-button type="danger" @click="clearContent">清空内容</el-button>
+            <el-button type="success" @click="release" size="small">发布资讯</el-button>
+            <el-button type="danger" @click="clearContent" size="small">清空内容</el-button>
         </div>
     </div>
 
 </template>
 
 <script>
-import { addnews } from '../../../api/informationManagement'
+import { addNews } from '@/api/informationManagement'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
 export default {
@@ -64,8 +64,7 @@ export default {
             editor.destroy() // 组件销毁时，及时销毁编辑器
         },
         async release() {
-            console.log(this.formData)
-            let data = await addnews(this.formData)
+            let data = await addNews(this.formData)
             if (data.code == 200) {
                 this.$notify({
                     title: '发布成功',

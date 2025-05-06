@@ -22,9 +22,17 @@
                     <span>{{ row.title }}</span>
                 </template>
             </el-table-column>
+            <el-table-column label="投诉进度" align="center">
+                <template slot-scope="{row}">
+                    <el-tag type="warning" v-if="row.status == 1">处理中</el-tag>
+                    <el-tag v-else-if="row.status == 2">已受理</el-tag>
+                    <el-tag type="success" v-else-if="row.status == 3">调解中</el-tag>
+                    <el-tag type="info" v-else-if="row.status == 4">已完结</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="所属菜市场" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.marketname }}</span>
+                    <span>{{ row.marketname ? row.marketname : '暂无' }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="投诉用户" align="center">

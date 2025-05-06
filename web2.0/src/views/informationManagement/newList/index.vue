@@ -39,8 +39,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template slot-scope="{row}">
-                    <el-button type="primary" @click="editItem(row)">编辑</el-button>
-                    <el-button type="danger" @click="deleteData(row.id)">删除</el-button>
+                    <el-button type="primary" @click="editItem(row)" size="small">编辑</el-button>
+                    <el-button type="danger" @click="deleteData(row.id)" size="small">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,19 +49,18 @@
             @pagination="getnewsList" />
 
 
-        <el-drawer title="编辑资讯" :visible.sync="drawer" :direction="direction" :before-close="handleClose">
-            <div style="height: 100vh; overflow-y: auto;">
-                <el-input v-model="formData.title" placeholder="请输入标题"></el-input>
-                <el-input type="textarea" v-model="formData.description" placeholder="请简要描述" height="50px"></el-input>
-                <el-input v-model="formData.category_name" placeholder="请输入资讯分类"></el-input>
-                <div style="margin: 5px;">
-                    <el-button type="success" @click="updateData">修改</el-button>
-                </div>
-                <Toolbar style="border-bottom: 1px solid #ccc" mode="default" />
-                <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
-                    @onCreated="onCreated" />
+        <el-dialog title="编辑资讯" :visible.sync="drawer" :before-close="handleClose">
+            <el-input v-model="formData.title" placeholder="请输入标题"></el-input>
+            <el-input type="textarea" v-model="formData.description" placeholder="请简要描述" height="50px"></el-input>
+            <el-input v-model="formData.category_name" placeholder="请输入资讯分类"></el-input>
+            <div style="margin: 5px;">
+                <el-button type="success" @click="updateData">修改</el-button>
             </div>
-        </el-drawer>
+
+            <Toolbar style="border-bottom: 1px solid #ccc;" :editor="null" mode="default" />
+            <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
+                @onCreated="onCreated" />
+        </el-dialog>
     </div>
 </template>
 <style>
