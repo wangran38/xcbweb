@@ -12,14 +12,34 @@
         </div>
         <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
             style="width: 100%;" @sort-change="sortChange">
-            <el-table-column label="id" align="center">
+            <!-- <el-table-column label="id" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.id }}</span>
                 </template>
-            </el-table-column>
+</el-table-column> -->
             <el-table-column label="投诉标题" align="center">
                 <template slot-scope="{row}">
                     <span>{{ row.title }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="投诉人" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.username }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="被投诉的商家" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.shop_name }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="投诉用户电话" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.userphone }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="投诉内容" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ row.content }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="投诉进度" align="center">
@@ -35,38 +55,22 @@
                     <span>{{ row.marketname ? row.marketname : '暂无' }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="投诉用户" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.username }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="被投诉商家" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.shop_name }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="投诉用户电话" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.userphone }}</span>
-                </template>
-            </el-table-column>
+
+
+
             <el-table-column label="创建时间" align="center">
                 <template slot-scope="{row}">
                     <span>{{ initTime(row.createtime) }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="投诉详情" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.content }}</span>
+
+            <el-table-column label="操作" align="center">
+                <template>
+                    <el-button size="small" type="success" @click="editItem(row)">修改处理状态</el-button>
+                    <!-- <el-button size="small" type="danger" @click="deleteData(row.id)">删除</el-button> -->
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="操作" align="center">
-                <template slot-scope="{row}">
-                    <el-button type="primary" @click="editItem(row)">编辑</el-button>
-                    <el-button type="danger" @click="deleteData(row.id)">删除</el-button>
-                </template>
-            </el-table-column> -->
         </el-table>
 
         <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
@@ -202,6 +206,10 @@ export default {
         this.getComplaintList()
     },
     methods: {
+        // 修改处理状态
+        editItem() {
+
+        },
         onCreated(editor) {
             this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
         },
