@@ -10,6 +10,7 @@
                 添加
             </el-button>
         </div>
+        <regionSelectionVue :ref="regionSelectionRef"></regionSelectionVue>
         <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
             style="width: 100%;" @sort-change="sortChange">
             <!-- <el-table-column label="id" align="center">
@@ -145,6 +146,7 @@
 }
 </style>
 <script>
+import regionSelectionVue from '@/components/regionSelection'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { complaintList } from '@/api/complaint'
 import waves from '@/directive/waves'
@@ -156,10 +158,11 @@ import { myMixin } from '@/utils/public'
 export default {
     name: '',
     mixins: [myMixin],
-    components: { Pagination, Tinymce, Editor, Toolbar },
+    components: { Pagination, Tinymce, Editor, Toolbar, regionSelectionVue },
     directives: { waves },
     data() {
         return {
+            regionSelectionRef: null,
             drawer: false,
             direction: 'rtl', // 抽屉展开方向
             searchSeen: false,
@@ -245,6 +248,7 @@ export default {
             this.handleFilter()
         },
         handleCreate() {
+            console.log(this.regionSelectionRef)
         },
         createData() {
 
