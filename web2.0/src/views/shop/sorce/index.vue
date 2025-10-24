@@ -199,7 +199,7 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import Tinymce from '@/components/Tinymce'
 
-import {myMixin} from '@/utils/public'
+import { myMixin } from '@/utils/public'
 
 // arr to obj, such as { CN : "China", US : "USA" }
 
@@ -208,7 +208,7 @@ import request from '@/utils/request'
 
 export default {
   //讲师列表
-  mixins:[myMixin],
+  mixins: [myMixin],
   name: '',
   components: { Pagination, Tinymce },
   directives: { waves },
@@ -375,14 +375,14 @@ export default {
             this.dialogFormVisible = false;
             this.$notify({
               title: 'Success',
-              message: '数据删除成功！ Successfully',
+              message: '结清成功！ Successfully',
               type: 'success',
               duration: 2000
             })
             this.getshopsorcelist()
             // this.list.splice(index, 1)
           } else {
-            this.$message.error('删除数据失败！');
+            this.$message.error('结清失败！');
             // this.reload();
           }
         })

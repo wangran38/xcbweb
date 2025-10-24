@@ -162,14 +162,14 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import Tinymce from '@/components/Tinymce'
 
 
-import {myMixin} from '@/utils/public'
+import { myMixin } from '@/utils/public'
 
 
 export default {
   //讲师列表
 
   name: '',
-  mixins:[myMixin],
+  mixins: [myMixin],
   components: { Pagination, Tinymce },
   directives: { waves },
   filters: {
@@ -221,6 +221,7 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
+        user_id: null,
         dateTime: [],
         limit: 20,
         page: 1,
@@ -259,6 +260,10 @@ export default {
       downloadLoading: false,
       optionsdata: [],
     }
+
+  },
+  mounted() {
+    this.listQuery.user_id = this.$route.query.id ? Number(this.$route.query.id) : null
 
   },
   created() {

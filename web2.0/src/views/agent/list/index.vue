@@ -13,47 +13,19 @@
         <regionSelectionVue v-show="searchSeen" :ref="regionSelectionRef"></regionSelectionVue>
         <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
             style="width: 100%;" @sort-change="sortChange">
-            <!-- <el-table-column label="id" align="center">
+            <el-table-column label="代理商名称" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.id }}</span>
-                </template>
-</el-table-column> -->
-            <el-table-column label="投诉标题" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.title }}</span>
+                    <span>{{ row.nickname }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="投诉人" align="center">
+            <el-table-column label="代理商手机号" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.username }}</span>
+                    <span>{{ row.phone }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="被投诉的商家" align="center">
+            <el-table-column label="代理商邮箱" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.shop_name }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="投诉用户电话" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.userphone }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="投诉内容" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.content }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="投诉进度" align="center">
-                <template slot-scope="{row}">
-                    <el-tag type="warning" v-if="row.status == 1">处理中</el-tag>
-                    <el-tag v-else-if="row.status == 2">已受理</el-tag>
-                    <el-tag type="success" v-else-if="row.status == 3">调解中</el-tag>
-                    <el-tag type="info" v-else-if="row.status == 4">已完结</el-tag>
-                </template>
-            </el-table-column>
-            <el-table-column label="所属菜市场" align="center">
-                <template slot-scope="{row}">
-                    <span>{{ row.marketname ? row.marketname : '暂无' }}</span>
+                    <span>{{ row.email }}</span>
                 </template>
             </el-table-column>
 
@@ -61,17 +33,16 @@
 
             <el-table-column label="创建时间" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ initTime(row.createtime) }}</span>
+                    <span>{{ initTime(row.Created) }}</span>
                 </template>
             </el-table-column>
 
 
-            <el-table-column label="操作" align="center">
+            <!-- <el-table-column label="操作" align="center">
                 <template>
                     <el-button size="small" type="success" @click="editItem(row)">修改处理状态</el-button>
-                    <!-- <el-button size="small" type="danger" @click="deleteData(row.id)">删除</el-button> -->
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
 
         <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
@@ -79,76 +50,11 @@
 
     </div>
 </template>
-<style>
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
 
-.avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-}
-
-.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-}
-
-.avatar {
-    width: 100px;
-    height: 100px;
-    display: block;
-}
-</style>
-<style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
-
-.createPost-container {
-    position: relative;
-
-    .createPost-main-container {
-        padding: 40px 45px 20px 50px;
-
-        .postInfo-container {
-            position: relative;
-            @include clearfix;
-            margin-bottom: 10px;
-
-            .postInfo-container-item {
-                float: left;
-            }
-        }
-    }
-
-    .word-counter {
-        width: 40px;
-        position: absolute;
-        right: 10px;
-        top: 0px;
-    }
-}
-
-.article-textarea ::v-deep {
-    textarea {
-        padding-right: 40px;
-        resize: none;
-        border: none;
-        border-radius: 0px;
-        border-bottom: 1px solid #bfcbd9;
-    }
-}
-</style>
 <script>
 import regionSelectionVue from '@/components/regionSelection'
 
-import { complaintList } from '@/api/complaint'
+import { agentDataList } from '@/api/agent'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 import { myMixin } from '@/utils/public'
@@ -221,7 +127,7 @@ export default {
         },
         getComplaintList() {
             this.listLoading = true
-            complaintList(this.listQuery).then(response => {
+            agentDataList(this.listQuery).then(response => {
                 this.list = response.data.listdata
                 this.total = response.data.totalnum
                 setTimeout(() => {
@@ -276,10 +182,75 @@ export default {
                 });
             });
         }
-
-
-
-
     }
 }
 </script>
+
+
+
+<style>
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+</style>
+<style lang="scss" scoped>
+@import "~@/styles/mixin.scss";
+
+.createPost-container {
+    position: relative;
+
+    .createPost-main-container {
+        padding: 40px 45px 20px 50px;
+
+        .postInfo-container {
+            position: relative;
+            @include clearfix;
+            margin-bottom: 10px;
+
+            .postInfo-container-item {
+                float: left;
+            }
+        }
+    }
+
+    .word-counter {
+        width: 40px;
+        position: absolute;
+        right: 10px;
+        top: 0px;
+    }
+}
+
+.article-textarea ::v-deep {
+    textarea {
+        padding-right: 40px;
+        resize: none;
+        border: none;
+        border-radius: 0px;
+        border-bottom: 1px solid #bfcbd9;
+    }
+}
+</style>

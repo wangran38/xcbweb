@@ -9,15 +9,10 @@
       </el-button>
     </div>
 
-    <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
+    <div class="filter-container" style="margin: 0 0 2% 0;display: flex;" v-if="searchSeen">
       <el-input v-model="listQuery.kname" placeholder="Title" style="width: 200px" class="filter-item"
         @keyup.enter.native="handleFilter" />
-      <!--<el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-          <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-        </el-select>-->
-      <!--<el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
-          <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-        </el-select>-->
+      <regionSelectionVue></regionSelectionVue>
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -266,6 +261,7 @@
 }
 </style>
 <script>
+import regionSelectionVue from '@/components/regionSelection'
 import { getshoplist } from '@/api/shop/list'
 import { getorderlist, orderSum } from '@/api/order/list/list'
 import waves from '@/directive/waves' // waves directive 点击水波纹
@@ -281,7 +277,7 @@ import request from '@/utils/request'
 export default {
   //讲师列表
   name: '',
-  components: { Pagination, Tinymce },
+  components: { Pagination, Tinymce, regionSelectionVue },
   directives: { waves },
   filters: {
     statusFilter(status) {

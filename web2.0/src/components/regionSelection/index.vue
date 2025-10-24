@@ -1,6 +1,6 @@
 <template>
-    <div>
-        地区选择
+    <div style="display: flex;align-items: center;">
+        <div style="margin: 10px;">地区选择</div>
         <el-cascader v-model="value" :props="props"></el-cascader>
     </div>
 </template>
@@ -29,7 +29,7 @@ export default {
                                 nodes = await citytree({
                                     pid: node.data.value
                                 })
-                                $status = 1
+                                $status++
 
                                 nodes = nodes.data.length >= 1 ? nodes.data : []
                             }

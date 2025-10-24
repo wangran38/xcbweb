@@ -28,13 +28,13 @@
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
       @sort-change="sortChange">
-      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="80"
+      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="100"
         :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.Id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="用户头像" width="110px" align="center">
+      <el-table-column label="用户头像" width="120px" align="center">
         <template slot-scope="{row}">
           <el-avatar :src="row.headimgurl"></el-avatar>
         </template>
@@ -55,9 +55,9 @@
           <span>{{ row.score }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="注册时间" align="center">
+      <el-table-column label="注册时间" align="center" width="180px">
         <template slot-scope="{row}">
-          <span>{{ initTime(row.Created) }}</span>
+          <span>{{ initTime(row.created) }}</span>
         </template>
       </el-table-column>
 
@@ -185,7 +185,7 @@ import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination'
 
-import {myMixin} from "@/utils/public";
+import { myMixin } from "@/utils/public";
 
 
 
@@ -194,7 +194,7 @@ export default {
   //列表
 
   name: '',
-  mixins:[myMixin],
+  mixins: [myMixin],
   components: { Pagination },
   directives: { waves },
   filters: {

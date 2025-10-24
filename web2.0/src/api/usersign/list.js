@@ -15,3 +15,15 @@ export function getsignlistgroup(params) {
     data: params
   })
 }
+
+
+/**
+ * 获取中奖记录数据
+*/
+export function getAwardList(params) {
+  return request({
+    url: '/admin/lottery/getlist',
+    method: 'post',
+    data: params
+  })
+}

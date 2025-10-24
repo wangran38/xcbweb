@@ -8,19 +8,24 @@
         添加
       </el-button>
     </div>
-    <div class="filter-container" style="margin: 0 0 2% 0" v-if="searchSeen">
-      <el-input v-model.number="listQuery.kname" placeholder="手机号" style="width: 200px" class="filter-item"
+    <div class="filter-container" style="margin: 0 0 2% 0;display: flex;" v-if="searchSeen">
+      <el-input v-model.number="listQuery.kname" placeholder="请输入姓名" style="width: 200px" class="filter-item"
         @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.status" style="width: 140px" class="filter-item" @change="handleFilter">
+      <!-- <el-select v-model="listQuery.status" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in statusOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-
+      </el-select> -->
+      <regionSelectionVue></regionSelectionVue>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         提交
       </el-button>
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;"
       @sort-change="sortChange">
+      <el-table-column label="ID" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="市场名称" align="center">
         <template slot-scope="{row}">
           <span>{{ row.market_name }}</span>
@@ -36,16 +41,17 @@
           <span>{{ row.area_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="联系电话" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.phone }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="农户名称" align="center">
         <template slot-scope="{row}">
           <span>{{ row.farmersname }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="联系电话" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.phone }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column label="创建时间" align="center">
         <template slot-scope="{row}">
           <span>{{ initTime(row.createtime) }}</span>
@@ -53,7 +59,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{row}">
-          <el-button type="primary" size="small">编辑</el-button>
+          <!-- <el-button type="primary" size="small">编辑</el-button> -->
           <el-button type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -156,6 +162,7 @@
 }
 </style>
 <script>
+import regionSelectionVue from '@/components/regionSelection'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { farmerslist } from '@/api/farmers'
 import waves from '@/directive/waves' // waves directive 点击水波纹
@@ -168,7 +175,7 @@ import { myMixin } from '@/utils/public'
 export default {
   name: '',
   mixins: [myMixin],
-  components: { Pagination, Editor, Toolbar },
+  components: { Pagination, regionSelectionVue },
   directives: { waves },
   filters: {
     statusFilter(status) {

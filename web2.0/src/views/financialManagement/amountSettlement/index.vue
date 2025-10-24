@@ -97,15 +97,6 @@
                     <el-button type="primary" size="mini" @click="handleUpdate(row, $index)">
                         结清操作
                     </el-button>
-                    <!--<el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-              详细
-            </el-button>-->
-                    <!--<el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-              Draft
-            </el-button>-->
-                    <!--<el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-              删除
-            </el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -247,20 +238,17 @@
 </style>
 <script>
 import { changemoney, upshopmoney } from '@/api/financialManagement'
-import waves from '@/directive/waves' // waves directive 点击水波纹
+import waves from '@/directive/waves'
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
 import Tinymce from '@/components/Tinymce'
-import {myMixin} from '@/utils/public'
-
-
-// arr to obj, such as { CN : "China", US : "USA" }
+import { myMixin } from '@/utils/public'
 
 
 
 export default {
     name: '',
-  mixins:[myMixin],
+    mixins: [myMixin],
     components: { Pagination, Tinymce },
     directives: { waves },
     filters: {
@@ -325,8 +313,8 @@ export default {
 
     },
     created() {
-        this.getshopsorcelist(),
-            this.groupoption()
+        this.getshopsorcelist()
+        this.groupoption()
     },
     methods: {
         getshopsorcelist() {
@@ -413,27 +401,36 @@ export default {
         },
 
         handleUpdate(row, index) {
+            if (row.status == 2) {
+                this.$notify({
+                    title: '已执行过此操作',
+                    type: 'success',
+                    duration: 2000
+                })
+                return
+            }
             this.$confirm('确定要结清吗', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                 row.status = 2
-                upshopmoney(row).then((response) => {
+                const { Id, status } = row
+                upshopmoney({ id: Id, status }).then((response) => {
                     // alert(index);
                     // console.log(response);
                     if (response.code == 200) {
                         this.dialogFormVisible = false;
                         this.$notify({
                             title: 'Success',
-                            message: '数据删除成功！ Successfully',
+                            message: '结清成功！ Successfully',
                             type: 'success',
                             duration: 2000
                         })
                         this.getshopsorcelist()
                         // this.list.splice(index, 1)
                     } else {
-                        this.$message.error('删除数据失败！');
+                        this.$message.error('结清失败！');
                         // this.reload();
                     }
                 })
@@ -453,84 +450,16 @@ export default {
                 return '待结算'
             }
         },
-        /* 删除按钮*/
-        handleDelete(row, index) {
-            this.$confirm('确定要删除【' + row.title + '】吗？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                del(row).then((response) => {
-                    // alert(index);
-                    // console.log(response);
-                    if (response.code == 200) {
-                        this.dialogFormVisible = false;
-                        this.$notify({
-                            title: 'Success',
-                            message: '数据删除成功！ Successfully',
-                            type: 'success',
-                            duration: 2000
-                        })
-                        this.list.splice(index, 1)
-                    } else {
-                        this.$message.error('删除数据失败！');
-                        // this.reload();
-                    }
-                })
-            })
 
-        },
-        //头像上传
-        handleAvatarSuccess(res, file) {
-            this.imgurl = URL.createObjectURL(file.raw);
-            this.temp.image = res;
-            // console.log(this.temp.image)
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpg';
-            const isPng = file.type === "image/png";
-            const isJpeg = file.type === "image/jpeg";
-            const isLt2M = file.size / 1024 / 1024 < 2;
 
-            if (!isJPG & !isPng & !isJpeg) {
-                this.$message.error('上传头像图片只能是图片格式!');
-                return false
-            }
-            if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
-                return false
-            }
-            return true;
-        },
+
         handleFetchPv(pv) {
             fetchPv(pv).then(response => {
                 this.pvData = response.data.pvData
                 this.dialogPvVisible = true
             })
         },
-        handleDownload() {
-            this.downloadLoading = true
-            import('@/vendor/Export2Excel').then(excel => {
-                const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-                const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-                const data = this.formatJson(filterVal)
-                excel.export_json_to_excel({
-                    header: tHeader,
-                    data,
-                    filename: 'table-list'
-                })
-                this.downloadLoading = false
-            })
-        },
-        formatJson(filterVal) {
-            return this.list.map(v => filterVal.map(j => {
-                if (j === 'timestamp') {
-                    return parseTime(v[j])
-                } else {
-                    return v[j]
-                }
-            }))
-        },
+
         getSortClass: function (key) {
             const sort = this.listQuery.sort
             return sort === `+${key}` ? 'ascending' : 'descending'

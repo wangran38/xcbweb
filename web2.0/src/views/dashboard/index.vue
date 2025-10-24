@@ -51,17 +51,17 @@
     <el-row :gutter="20" style="margin-top:40px;">
       <el-col :span="6">
         <router-link to="/lottery/lottery1">
-          <el-card shadow="always">开奖总积分: {{ dataInfo.lottery_sum }}</el-card>
+          <el-card shadow="always">开奖总积分: {{ dataInfo.lottery_sum.toFixed(1) }}</el-card>
         </router-link>
       </el-col>
       <el-col :span="6">
         <router-link to="/lottery/lottery1">
-          <el-card shadow="always">消费积分: {{ dataInfo.lottery_sellsum }}</el-card>
+          <el-card shadow="always">消费积分: {{ dataInfo.lottery_sellsum.toFixed(1) }}</el-card>
         </router-link>
       </el-col>
       <el-col :span="6">
         <router-link to="/lottery/lottery1">
-          <el-card shadow="always">未消费积分:{{  (dataInfo.lottery_sum-dataInfo.lottery_sellsum).toFixed(1) }}</el-card>
+          <el-card shadow="always">未消费积分:{{ (dataInfo.lottery_sum - dataInfo.lottery_sellsum).toFixed(1) }}</el-card>
         </router-link>
       </el-col>
 
@@ -99,7 +99,7 @@
           <el-card shadow="always">本周打卡:{{ dataInfo.sign_week_num }}人</el-card>
         </router-link>
       </el-col>
-      
+
       <el-col :span="5">
         <router-link to="/user/usersign">
           <el-card shadow="always">历史打卡:{{ dataInfo.sign_all_num }}次</el-card>
@@ -112,7 +112,7 @@
 <script>
 import { getcount } from '@/api/admin/count'
 export default {
-// const sum = Math.round(dataInfo.lottery_sum -dataInfo.lottery_sellsum);
+  // const sum = Math.round(dataInfo.lottery_sum -dataInfo.lottery_sellsum);
   data() {
     return {
       // 首页需要展示的数据

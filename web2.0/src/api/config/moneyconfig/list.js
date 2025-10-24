@@ -24,6 +24,15 @@ export function addmoneyconfig(params) {
 }
 
 
+// export function addmoneyconfig(params) {
+//   return request({
+//     url: '/admin/config/addmoneyconfig',
+//     method: 'post',
+//     data: params
+//   })
+// }
+
+
 // export function delmoneyconfig(params) {
 //   return request({
 //     url: '/admin/delcoupon',
