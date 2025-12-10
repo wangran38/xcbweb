@@ -13,65 +13,59 @@
         <regionSelectionVue v-show="searchSeen" :ref="regionSelectionRef"></regionSelectionVue>
         <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
             style="width: 100%;" @sort-change="sortChange">
-
-            <el-table-column label="ID" align="center">
+            <el-table-column label="订单号" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.Id }}</span>
+                    <span>{{ row.out_trade_no }}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column label="用户id" align="center">
+            <el-table-column label="总平台运营收入" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.userid }}</span>
+                    <span>{{ (row.level1money).toFixed(2) }}</span>
                 </template>
             </el-table-column>
-
-            <el-table-column label="代理商名称" align="center">
+            <el-table-column label="省级代理商" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.nickname }}</span>
+                    <span>{{ (row.level2money).toFixed(2) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="代理商手机号" align="center">
+            <el-table-column label="税金税费" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.phone }}</span>
+                    <span>{{ (row.level3money).toFixed(2) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="类型" align="center">
+            <el-table-column label="市县代理商" align="center">
                 <template slot-scope="{row}">
-                    <span v-if="row.type == 1">省级代理</span>
-                    <span v-else>市县代理</span>
+                    <span>{{ (row.level4money).toFixed(2) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="代理商邮箱" align="center">
+            <el-table-column label="发展商家收入" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ row.email }}</span>
+                    <span>{{ (row.level5money).toFixed(2) }}</span>
                 </template>
             </el-table-column>
-
-
+            <el-table-column label="发展会员收入" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ (row.level6money).toFixed(2) }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="会员消费返积分" align="center">
+                <template slot-scope="{row}">
+                    <span>{{ (row.level7money).toFixed(2) }}</span>
+                </template>
+            </el-table-column>
 
             <el-table-column label="创建时间" align="center">
                 <template slot-scope="{row}">
-                    <span>{{ initTime(row.Created) }}</span>
+                    <span>{{ initTime(row.createtime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
-                <template slot-scope="{row}">
-                    <div style="display: flex;">
-                        <el-button type="success" v-if="row.status == 2" size="small" disabled>已同意</el-button>
-                        <el-button type="success" v-else @click="editItem(row)" size="small">同意</el-button>
-                        <el-button type="danger" size="small" @click="editItem(row, true)">删除</el-button>
-                    </div>
-                    <!-- <el-button type="danger">拒绝申请</el-button> -->
-                </template>
-            </el-table-column>
-
-
             <!-- <el-table-column label="操作" align="center">
-                <template>
-                    <el-button size="small" type="success" @click="editItem(row)">修改处理状态</el-button>
+                <template slot-scope="{row}">
+                    <el-tag type="success" v-if="row.status == 2" size="large">已同意</el-tag>
+                    <el-button type="success" v-else @click="editItem(row)" size="small">同意申请</el-button>
                 </template>
             </el-table-column> -->
+
         </el-table>
 
         <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
@@ -83,7 +77,7 @@
 <script>
 import regionSelectionVue from '@/components/regionSelection'
 
-import { agentDataList, approved, rmroved } from '@/api/agent'
+import { revenueDetailList } from '@/api/agent'
 import waves from '@/directive/waves'
 import Pagination from '@/components/Pagination'
 import { myMixin } from '@/utils/public'
@@ -144,28 +138,17 @@ export default {
     },
     methods: {
 
-        // 修改处理状态 同时处理同意申请和删除申请
-        async editItem(row, Class = false) {
-            if (Class) {
-                let data = await rmroved({ id: row.Id })
-                if (data.code == 200) {
-                    this.$message({
-                        message: '删除成功',
-                        type: 'success'
-                    });
-                    this.getComplaintList()
-                }
-            } else {
-                let data = await approved({ id: row.Id, status: 2 })
-                if (data.code == 200) {
-                    this.$message({
-                        message: '操作成功',
-                        type: 'success'
-                    });
-                    this.getComplaintList()
-                }
-            }
+        // 修改处理状态
+        async editItem(row) {
 
+            let data = await approved({ id: row.Id, status: 2 })
+            if (data.code == 200) {
+                this.$message({
+                    message: '操作成功',
+                    type: 'success'
+                });
+                this.getComplaintList()
+            }
 
         },
         handleClose(done) {
@@ -177,7 +160,7 @@ export default {
         },
         getComplaintList() {
             this.listLoading = true
-            agentDataList(this.listQuery).then(response => {
+            revenueDetailList(this.listQuery).then(response => {
                 this.list = response.data.listdata
                 this.total = response.data.totalnum
                 setTimeout(() => {

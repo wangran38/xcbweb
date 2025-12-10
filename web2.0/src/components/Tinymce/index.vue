@@ -14,8 +14,8 @@ import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-// const tinymceCDN = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/4.9.3-30/tinymce.min.js'    // 需要替换cdn链接
-const tinymceCDN = window.location.origin + '/tinymce/tinymce.js'    // 需要替换cdn链接
+const tinymceCDN = 'https://cdn.tiny.cloud/1/qguhi9dy4s1dql48f8fcwdkxgbh3cz28kodbtwx9670e79eq/tinymce/4.9.3-30/tinymce.min.js'    // 需要替换cdn链接,配置api-key
+// const tinymceCDN = window.location.origin + '/tinymce/tinymce.js'    // 需要替换cdn链接
 
 export default {
   name: 'Tinymce',
@@ -115,6 +115,8 @@ export default {
         selector: `#${this.tinymceId}`,
         // language: this.languageTypeList['zh']   切换
         language_url: window.location.origin + '/tinymce/zh_CN.js',
+        apiKey: 'qguhi9dy4s1dql48f8fcwdkxgbh3cz28kodbtwx9670e79eq',
+        apikey: 'qguhi9dy4s1dql48f8fcwdkxgbh3cz28kodbtwx9670e79eq',
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,

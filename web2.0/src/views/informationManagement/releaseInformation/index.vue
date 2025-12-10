@@ -15,8 +15,10 @@
         </div>
 
         <Toolbar style="border-bottom: 1px solid #ccc" :editor="editor" :mode="mode" />
-        <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" :defaultConfig="editorConfig"
-            :mode="mode" @onCreated="onCreated" />
+        <!-- <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" :defaultConfig="editorConfig"
+            :mode="mode" @onCreated="onCreated" /> -->
+
+        <Tinymce v-model="formData.content" ref="editor" :height="500" />
         <div style="margin: 5px;">
             <el-button type="success" @click="release" size="small">发布资讯</el-button>
             <el-button type="danger" @click="clearContent" size="small">清空内容</el-button>
@@ -28,9 +30,10 @@
 <script>
 import { addNews } from '@/api/informationManagement'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import Tinymce from '@/components/Tinymce'
 
 export default {
-    components: { Editor, Toolbar },
+    components: { Editor, Toolbar, Tinymce },
     data() {
         return {
             formData: {

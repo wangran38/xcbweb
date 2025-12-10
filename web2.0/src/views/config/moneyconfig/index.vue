@@ -136,11 +136,11 @@
         <el-form-item label="平台运营维护费" prop="level1">
           <el-input-number v-model="temp.level1" :step="0.001" :min="0" />
         </el-form-item>
-        <el-form-item label="投资股东收益" prop="level2">
-          <el-input-number v-model="temp.level2" :step="0.001" :min="0" />
-        </el-form-item>
         <el-form-item label="预留税金" prop="level3">
           <el-input-number v-model="temp.level3" :step="0.001" :min="0" />
+        </el-form-item>
+        <el-form-item label="投资股东收益" prop="level2">
+          <el-input-number v-model="temp.level2" :step="0.001" :min="0" />
         </el-form-item>
         <el-form-item label="市县收益" prop="level4">
           <el-input-number v-model="temp.level4" :step="0.001" :min="0" />

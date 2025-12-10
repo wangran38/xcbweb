@@ -13,6 +13,8 @@
     <div class="filter-container" style="margin:0 0 2% 0;" v-if="searchSeen">
       <el-input v-model="listQuery.phone" placeholder="输入名称" style="width: 200px;" class="filter-item"
         @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.id" placeholder="输入用户id" style="width: 200px;" class="filter-item"
+        @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
@@ -221,6 +223,7 @@ export default {
       tableKey: 0,
       list: null,
       orderListQuery: {
+        id: null,
         pay_way: 0,
         uid: null,
         limit: 20,

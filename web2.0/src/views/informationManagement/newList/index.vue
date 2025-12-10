@@ -53,13 +53,15 @@
             <el-input v-model="formData.title" placeholder="请输入标题"></el-input>
             <el-input type="textarea" v-model="formData.description" placeholder="请简要描述" height="50px"></el-input>
             <el-input v-model="formData.category_name" placeholder="请输入资讯分类"></el-input>
+
+
+            <!-- <Toolbar style="border-bottom: 1px solid #ccc;" :editor="null" mode="default" />
+            <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
+                @onCreated="onCreated" /> -->
+            <Tinymce v-model="formData.content"></Tinymce>
             <div style="margin: 5px;">
                 <el-button type="success" @click="updateData">修改</el-button>
             </div>
-
-            <Toolbar style="border-bottom: 1px solid #ccc;" :editor="null" mode="default" />
-            <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
-                @onCreated="onCreated" />
         </el-dialog>
     </div>
 </template>

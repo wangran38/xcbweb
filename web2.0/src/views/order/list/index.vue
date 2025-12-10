@@ -68,7 +68,7 @@
       </el-table-column>
       <el-table-column label="支付积分" width="" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.payprice * 10 }}</span>
+          <span>{{ (row.payprice * 10).toFixed(1) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="支付方式" width="" align="center">
@@ -187,7 +187,7 @@
 }
 </style>
 <script>
-import {myMixin} from '@/utils/public'
+import { myMixin } from '@/utils/public'
 import { getorderlist } from '@/api/order/list/list'
 import waves from '@/directive/waves' // waves directive 点击水波纹
 import { parseTime } from '@/utils'
@@ -204,7 +204,7 @@ export default {
   //讲师列表
 
   name: '',
-  mixins:[myMixin],
+  mixins: [myMixin],
   components: { Pagination, Tinymce },
   directives: { waves },
   filters: {
