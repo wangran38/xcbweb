@@ -10,7 +10,15 @@
                 添加
             </el-button>
         </div>
-        <regionSelectionVue v-show="searchSeen" :ref="regionSelectionRef"></regionSelectionVue>
+        <div v-show="searchSeen"
+            style="margin: 10px; display: flex; align-items: center; justify-content: space-between; width: 700px;">
+            <regionSelectionVue :ref="regionSelectionRef"></regionSelectionVue>
+            <div>用户ID <el-input style="width: 100px;"></el-input></div>
+            <div>手机号 <el-input style="width: 100px;"></el-input></div>
+
+            <el-button type="success">搜索</el-button>
+        </div>
+
         <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row
             style="width: 100%;" @sort-change="sortChange">
 
@@ -39,7 +47,7 @@
             <el-table-column label="类型" align="center">
                 <template slot-scope="{row}">
                     <span v-if="row.type == 1">省级代理</span>
-                    <span v-else>市县代理</span>
+                    <span v-else>市县区级代理</span>
                 </template>
             </el-table-column>
             <el-table-column label="代理商邮箱" align="center">

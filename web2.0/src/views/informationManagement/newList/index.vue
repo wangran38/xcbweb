@@ -58,7 +58,7 @@
             <!-- <Toolbar style="border-bottom: 1px solid #ccc;" :editor="null" mode="default" />
             <Editor style="height: 500px; overflow-y: hidden;" v-model="formData.content" mode="default"
                 @onCreated="onCreated" /> -->
-            <Tinymce v-model="formData.content"></Tinymce>
+            <Tinymce v-model="formData.content" ref="tinymceRef"></Tinymce>
             <div style="margin: 5px;">
                 <el-button type="success" @click="updateData">修改</el-button>
             </div>
@@ -227,8 +227,11 @@ export default {
                 this.formData.description = item.description
                 this.formData.category_name = item.category_name
                 this.formData.content = item.content
+
+                this.$refs.tinymceRef.setContent(item.content)
                 this.formData.id = item.id
             }
+            console.log(this.$refs)
             console.log(item)
         },
         onCreated(editor) {
